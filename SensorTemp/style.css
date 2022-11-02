@@ -1,0 +1,101 @@
+html {
+    
+    font-family: Arial; 
+    display: inline-block; 
+    text-align: center;
+
+}
+p {  
+    font-size: 1.2rem;
+}
+body {  
+    margin: 0;
+}
+
+.titulo { 
+    overflow: hidden;
+    background-color: #2f4468; 
+    color: white; 
+    font-size: 1rem; 
+}
+
+.contenedor { 
+    padding: 20px; 
+}
+
+.cards { 
+    max-width: 1000px; 
+    padding: 20px;
+    margin:  auto; 
+    display: grid; 
+    grid-gap: 1rem; 
+    grid-template-columns: repeat(auto-fit, minmax(300px, 2fr)); 
+}
+
+.card { 
+    height: 120px;
+    background-color: white; 
+    box-shadow: 2px 2px 12px 1px rgba(140,140,140,.5); 
+}
+
+.card.temperature { 
+    color: #fd7e14; 
+}
+
+.card.humidity { 
+    color: #1b99e0; 
+}
+
+.dewPoint { 
+    color: #1b78e2; 
+}
+
+
+.reading { 
+    font-size: 2.4rem; 
+}
+
+.packet { 
+    color: #bebebe; 
+}
+
+.chartCard {      
+    display: flex;
+    justify-content: center;  
+    padding: 10px;   
+  }
+
+  .chartBox {
+    width: 700px;
+    height: 350px;
+    padding: 10px;    
+    background-color: white; 
+    box-shadow: 2px 2px 12px 1px rgba(140,140,140,.5);   
+  }
+
+@media only screen and (max-width: 600px){
+
+    .chartBox {
+        width: 90%;
+        height: 400px;
+        
+      }    
+
+}
+
+#c2 { 
+
+margin: 0 auto;
+height: 100px;       
+}
+
+.Descarga {
+    border: 10px;
+    margin-bottom: 200px;
+}
+
+footer{
+    height: 100px;
+}
+
+
