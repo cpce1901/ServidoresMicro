@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+        <title>Electricidad RCD Spa</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1", charset="utf-8"> 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.2/chart.min.js" integrity="sha512-zjlf0U0eJmSo1Le4/zcZI51ks5SjuQXkU0yOdsOBubjSmio9iCUp8XPLkEAADZNBdR9crRy3cniZ65LF2w8sRA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>     
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+       
+        <link rel="stylesheet" href="style.css">        
+        <script src="script.js"></script>       
+          
+        
+<body onload="javascript:init()">
+
+    <div class="titulo">
+        <h3>ESPNOW TO WEBSERVER</h3>
+    </div>
+    
+    <div id="contenedor">
+        
+        <div class="cards">      
+            
+            <div class="card temperature">
+                <h4><i class="fas fa-thermometer-half"></i> PROMEDIO - TEMPERATURA</h4>
+                <p><span class="reading"><span id="temp_r_value"></span> &deg;C</span></p>               
+            </div>
+
+            <div class="card humidity">
+                <h4><i class="fas fa-tint"></i> PROMEDIO - HUMEDAD</h4>
+                <p><span class="reading"><span id="hum_r_value"></span> &percnt;</span></p>             
+            </div>
+            
+            <div class="card dewPoint">
+                <h4><i class="fas fa-tint"></i> PROMEDIO - PUNTO DE ROCIO</h4>
+                <p><span class="reading"><span id="procio_r_value"></span> &deg;C</span></p>          
+            </div>  
+            
+            <div class="card temperature">
+                <h4><i class="fas fa-thermometer-half"></i> Of. Patricio - TEMPERATURA</h4>
+                <p><span class="reading"><span id="temp_1_value"></span> &deg;C</span></p>                               
+            </div>
+
+            <div class="card humidity">
+                <h4><i class="fas fa-tint"></i> Of. Patricio - HUMEDAD</h4>
+                <p><span class="reading"><span id="hum_1_value"></span> &percnt;</span></p>             
+            </div>
+            
+            <div class="card dewPoint">
+                <h4><i class="fas fa-tint"></i> Of. Patricio - PUNTO DE ROCIO</h4>
+                <p><span class="reading"><span id="procio_1_value"></span> &deg;C</span></p>          
+            </div>   
+            
+            <div class="card temperature">
+                <h4><i class="fas fa-thermometer-half"></i> Terminaciones - TEMPERATURA</h4>
+                <p><span class="reading"><span id="temp_2_value"></span> &deg;C</span></p>            
+            </div>
+
+            <div class="card humidity">
+                <h4><i class="fas fa-tint"></i> Terminaciones - HUMEDAD</h4>
+                <p><span class="reading"><span id="hum_2_value"></span> &percnt;</span></p>               
+            </div>
+            
+            <div class="card dewPoint">
+                <h4><i class="fas fa-tint"></i> Terminaciones - PUNTO DE ROCIO</h4>
+                <p><span class="reading"><span id="procio_2_value"></span> &deg;C</span></p>               
+            </div>   
+            
+            <div class="card temperature">
+                <h4><i class="fas fa-thermometer-half"></i> Revestimiento - TEMPERATURA</h4>
+                <p><span class="reading"><span id="temp_3_value"></span> &deg;C</span></p>               
+            </div>
+
+            <div class="card humidity">
+                <h4><i class="fas fa-tint"></i> Revestimiento - HUMEDAD</h4>
+                <p><span class="reading"><span id="hum_3_value"></span> &percnt;</span></p>             
+            </div>
+            
+            <div class="card dewPoint">
+                <h4><i class="fas fa-tint"></i> Revestimiento - PUNTO DE ROCIO</h4>
+                <p><span class="reading"><span id="procio_3_value"></span> &deg;C</span></p>                
+            </div>     
+         </div>
+    </div> 
+
+    <div class="chartCard">     
+        <div class="chartBox">
+            <canvas id="linea"></canvas>   
+        </div>                                    
+    </div>     
+</body>
+
+</html>
