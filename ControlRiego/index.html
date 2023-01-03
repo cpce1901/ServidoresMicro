@@ -13,7 +13,7 @@
 <body>
     <header class="header">
         <nav class="nav">
-            <a href="#" class="title nav-link">Riego Casa</a>
+            <a href="/index.html" class="title nav-link">Riego Casa</a>
             <ul class="nav-menu">
                 <li class="nav-menu-item"><a href="#" class="nav-menu-link nav-link"></a></li>
                 <li class="nav-menu-item"><a href="#" class="nav-menu-link nav-link"></a></li>
@@ -24,37 +24,132 @@
     </header>
 
 
+    <div id="container">
+        <div class="card-info">
+            <div class="time-clock">
+                <p id="hora">10:10:10</p>
+            </div>
+            <div class="time-date">
+                <p id="fecha">19/01/1991</p>
+            </div>
 
-    <div class="conten-general">
-        <div class="manual-activate">
-            <div class=" info">
-                <section class="clock">
-                    <div class="hora">
-                        <p id="hora">10:10:10</p>
-                    </div>
-                    <div class="fecha">
-                        <p id="fecha">19/01/1991</p>
-                    </div>
-                </section>
+            <hr class="separator">
 
-                <hr />
-
-                <section class="boton">
-                    <label class="switch">
-                        <input type="checkbox" id="rele_s" onclick="isChecked()">
-                        <span class="slider"></span>
-                    </label>
-                </section>
-
+            <div class="manual-activate">
+                <label class="switch">
+                    <input type="checkbox" id="rele_s" onclick="isChecked()">
+                    <span class="slider"></span>
+                </label>
             </div>
         </div>
 
-        <div class="gradient-overlay"></div>
-        <div class="color-overlay"></div>
+        <div class="card-table-info">
+            <div class="title-table">
+                <h2>Programación</h2>
+            </div>
 
+            <div class="container-table-on">
+                <table class="table-center">
+                    <tr>
+                        <th id="ID">Id</th>
+                        <th>Encendido</th>
+                        <th>Apagado</th>
+                        <th>Acción</th>
+                    </tr>
 
+                    <tr class="active-row">
+                        <td id="ID">1</td>
+                        <td id="on_1">10:00:00</td>
+                        <td id="off_1">10:00:00</td>
+                        <td rowspan="5"><a href="javascript:show();">editar</a></td>
+                    </tr>
 
+                    <tr>
+                        <td id="ID">2</td>
+                        <td id="on_2">10:00:00</td>
+                        <td id="off_2">10:00:00</td>
+                    </tr>
+
+                    <tr class="active-row">
+                        <td id="ID">3</td>
+                        <td id="on_3">10:00:00</td>
+                        <td id="off_3">10:00:00</td>
+                    </tr>
+
+                    <tr>
+                        <td id="ID">4</td>
+                        <td id="on_4">10:00:00</td>
+                        <td id="off_4">10:00:00</td>
+                    </tr>
+
+                    <tr class="active-row">
+                        <td id="ID">5</td>
+                        <td id="on_5">10:00:00</td>
+                        <td id="off_5">10:00:00</td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+
+        <div id="edit">
+
+            <div class="title-table">
+                <h2>Programación</h2>
+            </div>
+
+            <div class="cancel">
+                <a title="Cerrar" href="javascript:show();"><img src="/cancel.png"></a>
+            </div>
+
+            <table class="table-center">
+                <tr>
+                    <th id="ID-2">Id</th>
+                    <th>Encendido</th>
+                    <th>Apagado</th>
+                    <th>Acción</th>
+                </tr>
+
+                <tr class="active-row-1">
+                    <td id="ID">1</td>
+                    <td><input type="text" id="on1" placeholder="00:00:00" /></td>
+                    <td><input type="text" id="off1" placeholder="00:00:00" /></td>
+                    <td rowspan="5"><button onclick="read_all()" id="leer">Guardar</button></td>
+                </tr>
+
+                <tr>
+                    <td id="ID-2">2</td>
+                    <td><input type="text" id="on2" placeholder="00:00:00" /></td>
+                    <td><input type="text" id="off2" placeholder="00:00:00" /></td>
+                </tr>
+
+                <tr class="active-row-2">
+                    <td id="ID-2">3</td>
+                    <td><input type="text" id="on3" placeholder="00:00:00" /></td>
+                    <td><input type="text" id="off3" placeholder="00:00:00" /></td>
+                </tr>
+
+                <tr>
+                    <td id="ID-2">4</td>
+                    <td><input type="text" id="on4" placeholder="00:00:00" /></td>
+                    <td><input type="text" id="off4" placeholder="00:00:00" /></td>
+                </tr>
+
+                <tr class="active-row-2">
+                    <td id="ID-2">5</td>
+                    <td><input type="text" id="on5" placeholder="00:00:00" /></td>
+                    <td><input type="text" id="off5" placeholder="00:00:00" /></td>
+                </tr>
+            </table>
+        </div>
     </div>
 </body>
+
+<footer>
+    <br>
+    <p>@Creado por Claudio Carreño - 2023</p>
+    <p>+56 9 63044658</p>
+    <br>
+</footer>
 
 </html>
