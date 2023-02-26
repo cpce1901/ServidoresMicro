@@ -5,6 +5,9 @@ window.onload = function (event) {
 
 var Socket;
 var estado_boton = 0;
+var estado_sensor = 0;
+var estateLed = 0;
+var estateSensor = 0;
 var dia = 19;
 var mes = 1;
 var ano = 1991;
@@ -21,7 +24,7 @@ var off_2 = "";
 var off_3 = "";
 var off_4 = "";
 var off_5 = "";
-var estateLed = 0;
+
 
 var full_fecha = "";
 var full_hora = "";
@@ -60,6 +63,7 @@ function processCommand(event) {
     off_5 = data.off_5;
 
     estateLed = data.estateLed;
+    estateSensor = data.estateSensor;
 
     if (hora < 10) {
         var new_hora = "0" + String(hora)
@@ -123,6 +127,13 @@ function processCommand(event) {
         document.getElementById('rele_s').checked = 0;
     }
 
+    if (estateSensor) {
+        document.getElementById('sensor_s').checked = 1;
+    }
+    else {
+        document.getElementById('sensor_s').checked = 0;
+    }
+
 
 }
 
@@ -135,6 +146,19 @@ function isChecked() {
     else {
         estado_boton = 0;
         console.log("Led is OFF");
+        button_send_back();
+    }
+}
+
+function isChecked2() {
+    if (document.getElementById('sensor_s').checked) {
+        estado_sensor = 1;
+        console.log("Sensor is ON");
+        button_send_back();
+    }
+    else {
+        estado_sensor = 0;
+        console.log("Sensor is OFF");
         button_send_back();
     }
 }
@@ -196,6 +220,7 @@ function read_all() {
 
     show();
     button_send_back();
+    
 
 }
 
@@ -211,7 +236,8 @@ function button_send_back() {
         off3: off_3,
         off4: off_4,
         off5: off_5,
-        led: estado_boton
+        led: estado_boton,
+        sen: estado_sensor
     };
     Socket.send(JSON.stringify(msg));
 
@@ -243,14 +269,4 @@ function showAll() {
     document.getElementById("off4").value = off_4;
     document.getElementById("off5").value = off_5;
 }
-
-
-
-
-
-
-
-
-
-
 
