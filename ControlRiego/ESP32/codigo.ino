@@ -1,4 +1,3 @@
-
 #include <ESP32Time.h>
 #include <SPIFFS.h>
 #include <WiFi.h>
@@ -9,12 +8,12 @@
 // Datos de conexion a red
 
 char* ssid_casa = "Jessica2.4";
-const char* password_casa =  "167832873";
+const char* password_casa = "167832873";
 
 // Datos de nueva red
 
-const char *ssid_riego = "Riego";
-const char *password_riego = "cpce_1901";
+const char* ssid_riego = "Riego";
+const char* password_riego = "cpce_1901";
 
 // Configuracion servidor NTP
 
@@ -26,9 +25,14 @@ const int dayligthOffset_sec = 0;
 
 #define rele 4
 
+// Definimos pin de entrada de sensor
+
+#define sensor 18
+
 // Variables globales
 
 int estadoLed;
+int estadoSensor;
 
 // Variables globales de tiempo
 
@@ -60,7 +64,7 @@ ESP32Time rtc;
 // Objetos websokets y server
 
 AsyncWebServer server(80);
-WebSocketsServer webSocket = WebSocketsServer(81);    // the websocket uses port 81 (standard port for websockets
+WebSocketsServer webSocket = WebSocketsServer(81);  // the websocket uses port 81 (standard port for websockets
 
 
 // Declaramos funcion para su uso posterior
@@ -69,8 +73,7 @@ void enviarDatosSensor();
 
 // Funcion en caso de ser una pagina no encontrada
 
-void notFound(AsyncWebServerRequest *request)
-{
+void notFound(AsyncWebServerRequest* request) {
   request->send(404, "text/plain", "Pagina no encontrada");
 }
 
@@ -79,6 +82,10 @@ void setup() {
   Serial.begin(115200);
 
   pinMode(rele, OUTPUT);
+  pinMode(sensor, INPUT);
+
+  digitalWrite(rele, HIGH);
+
 
   WiFi.mode(WIFI_MODE_APSTA);
 
@@ -113,8 +120,7 @@ void setup() {
   readJson();
 
   // Carga de html como texto
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest * request)
-  {
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest * request) {
     request->send(SPIFFS, "/index.html", "text/html");
   });
 
@@ -136,8 +142,8 @@ void setup() {
   server.onNotFound(notFound);
   server.begin();
 
-  webSocket.begin();                                  // start websocket
-  webSocket.onEvent(webSocketEvent);                  // define a callback function -> what does the ESP32 need to do when an event from the websocket is received? -> run function "webSocketEvent()"
+  webSocket.begin();                  // start websocket
+  webSocket.onEvent(webSocketEvent);  // define a callback function -> what does the ESP32 need to do when an event from the websocket is received? -> run function "webSocketEvent()"
 }
 
 void loop() {
@@ -161,8 +167,7 @@ void loop() {
     Task_2 = millis();
     if (estadoLed == 1) {
       digitalWrite(rele, LOW);
-    }
-    else {
+    } else {
       digitalWrite(rele, HIGH);
     }
   }
@@ -172,13 +177,27 @@ void loop() {
     enviarDatosSensor();
   }
 
-  webSocket.loop();
+  if (millis() - Task_4 > 150) {
+    Task_4 = millis();
+    if (estadoSensor == 1) {
+      int read_sensor = digitalRead(sensor);
+      if (read_sensor == 1) {
+        estadoLed = 1;
+      } else {
+        estadoLed = 0;
+      }
 
+    } else {
+      Serial.println("Aun no esta habilitado el sensor de movimiento");
+    }
+  }
+
+  webSocket.loop();
 }
 
 // Funcion encargada de sincronizar websoquets
 
-void webSocketEvent(byte num, WStype_t type, uint8_t * payload, size_t length) {
+void webSocketEvent(byte num, WStype_t type, uint8_t* payload, size_t length) {
   switch (type) {
     case WStype_DISCONNECTED:
       Serial.println("Client " + String(num) + " disconnected");
@@ -194,10 +213,10 @@ void webSocketEvent(byte num, WStype_t type, uint8_t * payload, size_t length) {
         Serial.print(F("deserializeJson() failed: "));
         Serial.println(error.f_str());
         return;
-      }
-      else {
+      } else {
 
         const int estadoled = doc["led"];
+        const int estadosensor = doc["sen"];
         const char* on1 = doc["on1"];
         const char* on2 = doc["on2"];
         const char* on3 = doc["on3"];
@@ -212,6 +231,7 @@ void webSocketEvent(byte num, WStype_t type, uint8_t * payload, size_t length) {
 
 
         Serial.println("led: " + String(estadoled));
+        Serial.println("sensor: " + String(estadosensor));
         Serial.println("on1: " + String(on1));
         Serial.println("off1: " + String(off1));
         Serial.println("on2: " + String(on2));
@@ -224,6 +244,7 @@ void webSocketEvent(byte num, WStype_t type, uint8_t * payload, size_t length) {
         Serial.println("off5: " + String(off5));
 
         estadoLed = estadoled;
+        estadoSensor = estadosensor;
 
         on_1 = String(on1);
         on_2 = String(on2);
@@ -238,7 +259,6 @@ void webSocketEvent(byte num, WStype_t type, uint8_t * payload, size_t length) {
         off_5 = String(off5);
 
         recDataJson();
-
       }
       Serial.println("");
       break;
@@ -248,7 +268,7 @@ void webSocketEvent(byte num, WStype_t type, uint8_t * payload, size_t length) {
 void enviarDatosSensor() {
 
   String jsonString = "";
-  StaticJsonDocument<512> doc;
+  StaticJsonDocument<1024> doc;
   JsonObject object = doc.to<JsonObject>();
   object["day"] = rtc.getDay();
   object["month"] = rtc.getMonth();
@@ -267,10 +287,11 @@ void enviarDatosSensor() {
   object["off_4"] = off_4;
   object["off_5"] = off_5;
   object["estateLed"] = estadoLed;
+  object["estateSensor"] = estadoSensor;
 
   serializeJson(doc, jsonString);
 
-  //Serial.println(jsonString);
+  Serial.println(jsonString);
 
   webSocket.broadcastTXT(jsonString);
 }
@@ -281,7 +302,6 @@ void out_on(String valor) {
     estadoLed = 1;
     digitalWrite(rele, !estadoLed);
   }
-
 }
 
 void out_off(String valor) {
@@ -290,7 +310,6 @@ void out_off(String valor) {
     estadoLed = 0;
     digitalWrite(rele, !estadoLed);
   }
-
 }
 
 void listFilles() {
@@ -316,8 +335,7 @@ void readJson() {
       Serial.print(F("deserializeJson() failed: "));
       Serial.println(error.f_str());
       return;
-    }
-    else {
+    } else {
       const char* on1 = doc["on_1"];
       const char* on2 = doc["on_2"];
       const char* on3 = doc["on_3"];
